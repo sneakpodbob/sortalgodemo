@@ -2,7 +2,6 @@
 
 namespace SortAlgoDemo.Tests.SortAlgos;
 
-
 public class HeapSortTests
 {
     /// <summary>
@@ -272,13 +271,13 @@ public class HeapSortTests
     {
         return new TheoryData<int[], int[]>
         {
-            { new[] { 1, 2, 3 }, new[] { 1, 2, 3 } },
-            { new[] { 3, 2, 1 }, new[] { 1, 2, 3 } },
-            { new[] { 2, 1, 3 }, new[] { 1, 2, 3 } },
-            { new[] { 2, 3, 1 }, new[] { 1, 2, 3 } },
-            { new[] { 1, 3, 2 }, new[] { 1, 2, 3 } },
-            { new[] { 3, 1, 2 }, new[] { 1, 2, 3 } },
-            { new[] { 5, 5, 5 }, new[] { 5, 5, 5 } }
+            { [1, 2, 3], [1, 2, 3] },
+            { [3, 2, 1], [1, 2, 3] },
+            { [2, 1, 3], [1, 2, 3] },
+            { [2, 3, 1], [1, 2, 3] },
+            { [1, 3, 2], [1, 2, 3] },
+            { [3, 1, 2], [1, 2, 3] },
+            { [5, 5, 5], [5, 5, 5] }
         };
     }
 
@@ -287,15 +286,15 @@ public class HeapSortTests
     /// </summary>
     public static TheoryData<int[]> GetLargerArrayTestCases()
     {
-        return new TheoryData<int[]>
-        {
-            new[] { 4, 10, 3, 5, 1 },
-            new[] { 100, 50, 25, 75, 10, 90, 30, 60 },
-            new[] { -50, -10, -100, -25, -75 },
-            new[] { 0, 0, 0, 1, 1, 1, -1, -1, -1 },
-            new[] { 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 },
-            new[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5 }
-        };
+        return
+        [
+            [4, 10, 3, 5, 1],
+            [100, 50, 25, 75, 10, 90, 30, 60],
+            [-50, -10, -100, -25, -75],
+            [0, 0, 0, 1, 1, 1, -1, -1, -1],
+            [15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+            [1, 1, 2, 2, 3, 3, 4, 4, 5, 5]
+        ];
     }
 
     /// <summary>
@@ -305,7 +304,7 @@ public class HeapSortTests
     /// <returns>True if the array is sorted in ascending order; otherwise, false.</returns>
     private static bool IsArraySorted(int[] array)
     {
-        for (int i = 1; i < array.Length; i++)
+        for (var i = 1; i < array.Length; i++)
         {
             if (array[i] < array[i - 1])
             {
