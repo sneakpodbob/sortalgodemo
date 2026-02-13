@@ -17,7 +17,8 @@ ISortAlgorithm[] algorithms =
     new ShellSort(),
     new InsertionSort(),
     new SelectionSort(),
-    new BubbleSort()
+    new BubbleSort(),
+    new LinqSort()
 ];
 
 Random.Shared.Shuffle(algorithms);
