@@ -30,6 +30,7 @@ This repo exists to explore what GitHub Copilot can do: generating algorithms, w
 | Merge Sort | `MergeSort` |
 | Heap Sort | `HeapSort` |
 | Quick Sort | `QuickSort` |
+| Linq Sort | `LinqSort` |
 
 All algorithms implement the shared `ISortAlgorithm` interface.
 
