@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SortAlgoDemo/SortAlgoDemo.csproj" />
+  <Project Path="SortAlgoDemo.Tests/SortAlgoDemo.Tests.csproj" Id="825274c6-0711-4fc3-9212-8e311ce6ada7" />
+</Solution>
