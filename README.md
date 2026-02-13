@@ -55,4 +55,4 @@ dotnet test
 
 ## 📄 License
 
-This project is for learning and experimentation — use it however you like.
+This project is for learning and experimentation — use it however you like. (MIT License)
