@@ -8,9 +8,6 @@ public class LinqSort : ISortAlgorithm
 
     public void Sort(int[] array)
     {
-        _ = array.Length;
-        var list = new List<int>(array);
-        list.Sort();
-        list.CopyTo(array);
+        Array.Sort(array);
     }
 }

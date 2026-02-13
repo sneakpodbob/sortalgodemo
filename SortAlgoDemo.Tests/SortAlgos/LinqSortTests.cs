@@ -76,17 +76,17 @@ public class LinqSortTests
     }
 
     /// <summary>
-    /// Tests that the Sort method throws NullReferenceException when the input array is null.
+    /// Tests that the Sort method throws ArgumentNullException when the input array is null.
     /// </summary>
     [Fact]
-    public void Sort_NullArray_ThrowsNullReferenceException()
+    public void Sort_NullArray_ThrowsArgumentNullException()
     {
         // Arrange
         var linqSort = new LinqSort();
         int[]? array = null;
 
         // Act & Assert
-        Assert.Throws<NullReferenceException>(() => linqSort.Sort(array!));
+        Assert.Throws<ArgumentNullException>(() => linqSort.Sort(array!));
     }
 
     /// <summary>
