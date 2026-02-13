@@ -6,7 +6,7 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Built with GitHub Copilot](https://img.shields.io/badge/built%20with-GitHub%20Copilot-8957e5?logo=githubcopilot)
 
-A small .NET 10 console app that benchmarks classic sorting algorithms — built entirely as a playground for experimenting with **GitHub Copilot**.
+A small .NET 10 console app that benchmarks classic sorting algorithms using **BenchmarkDotNet** — built entirely as a playground for experimenting with **GitHub Copilot**.
 
 ## ✨ Purpose
 
@@ -41,12 +41,14 @@ All algorithms implement the shared `ISortAlgorithm` interface.
 git clone https://github.com/sneakpodbob/sortalgodemo.git
 cd sortalgodemo
 
-# run the benchmark
-dotnet run --project SortAlgoDemo
+# run the benchmark (BenchmarkDotNet must run in `Release` configuration for reliable measurements)
+dotnet run --project SortAlgoDemo -c Release
 
 # run the tests
 dotnet test
 ```
+
+BenchmarkDotNet uses the `SortBenchmarks` runner to exercise each algorithm on the same seeded random dataset. The generated artifacts (HTML, Markdown, etc.) land in `SortAlgoDemo/BenchmarkResults`, so open the latest report after the benchmark finishes.
 
 ## 🛠️ Tech Stack
 
