@@ -1,71 +1,67 @@
-﻿using System.Diagnostics;
+﻿using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Exporters;
+using BenchmarkDotNet.Running;
 using SortAlgoDemo.SortAlgos;
 using SortAlgoDemo.SortAlgos.Interface;
 
-const int size = 100_000;
+var config = ManualConfig.Create(DefaultConfig.Instance)
+    .AddExporter(HtmlExporter.Default)
+    .WithArtifactsPath("BenchmarkResults");
 
-var original = new int[size];
-Random rng = new(42);
-for (var i = 0; i < size; i++)
-    original[i] = rng.Next();
+BenchmarkRunner.Run<SortBenchmarks>(config);
 
-ISortAlgorithm[] algorithms =
-[
-    new QuickSort(),
-    new MergeSort(),
-    new HeapSort(),
-    new ShellSort(),
-    new InsertionSort(),
-    new SelectionSort(),
-    new BubbleSort(),
-    new LinqSort()
-];
-
-Random.Shared.Shuffle(algorithms);
-
-const int barWidth = 30;
-var total = algorithms.Length;
-var results = new (string Name, double Ms)[total];
-
-Console.WriteLine($"Sorting {size:N0} random integers\n");
-Console.WriteLine($"{"Algorithm",-18} {"Time",12}");
-Console.WriteLine(new string('-', 31));
-
-for (var i = 0; i < total; i++)
+[MemoryDiagnoser]
+public class SortBenchmarks
 {
-    var algorithm = algorithms[i];
-    var name = algorithm.Name;
-    var copy = (int[])original.Clone();
+    private const int Size = 100_000;
+    private int[] _data = [];
+    private ISortAlgorithm _algorithm = null!;
 
-    // draw progress bar
-    var filled = (int)((double)i / total * barWidth);
-    var empty = barWidth - filled;
-    Console.Write($"\r[{"█".PadRight(filled, '█')}{"░".PadRight(empty, '░')}] {i}/{total}  Running {name}...".PadRight(80));
+    public IEnumerable<string> AlgorithmNames =>
+    [
+        nameof(QuickSort),
+        nameof(MergeSort),
+        nameof(HeapSort),
+        nameof(ShellSort),
+        nameof(InsertionSort),
+        nameof(SelectionSort),
+        nameof(BubbleSort),
+        nameof(LinqSort)
+    ];
 
-    var sw = Stopwatch.StartNew();
-    algorithm.Sort(copy);
-    sw.Stop();
+    [ParamsSource(nameof(AlgorithmNames))]
+    public string AlgorithmName { get; set; } = string.Empty;
 
-    results[i] = (name, sw.Elapsed.TotalMilliseconds);
+    [GlobalSetup]
+    public void GlobalSetup()
+    {
+        _data = new int[Size];
+        var rng = new Random(42);
+        for (var i = 0; i < Size; i++)
+        {
+            _data[i] = rng.Next();
+        }
 
-    // clear progress line then print result
-    Console.Write($"\r{"",-80}\r");
-    Console.WriteLine($"{name,-18} {sw.Elapsed.TotalMilliseconds,9:N2} ms");
-}
+        _algorithm = AlgorithmName switch
+        {
+            nameof(QuickSort) => new QuickSort(),
+            nameof(MergeSort) => new MergeSort(),
+            nameof(HeapSort) => new HeapSort(),
+            nameof(ShellSort) => new ShellSort(),
+            nameof(InsertionSort) => new InsertionSort(),
+            nameof(SelectionSort) => new SelectionSort(),
+            nameof(BubbleSort) => new BubbleSort(),
+            nameof(LinqSort) => new LinqSort(),
+            _ => throw new ArgumentOutOfRangeException(nameof(AlgorithmName), AlgorithmName, "Unknown algorithm")
+        };
+    }
 
-// final progress bar at 100%
-Console.Write($"\r[{"█".PadRight(barWidth, '█')}] {total}/{total}  Done!".PadRight(80));
-Console.WriteLine("\n");
-
-// summary comparison table
-var fastest = results.Min(r => r.Ms);
-
-Console.WriteLine($"{"Algorithm",-18} {"Time",12} {"vs Fastest",14}");
-Console.WriteLine(new string('-', 46));
-
-foreach (var (name, ms) in results.OrderBy(r => r.Ms))
-{
-    var pct = ms / fastest * 100.0;
-    var tag = pct <= 100.0 ? "(fastest)" : $"{pct,7:N1}%";
-    Console.WriteLine($"{name,-18} {ms,9:N2} ms {tag,14}");
+    [Benchmark]
+    public int[] Sort()
+    {
+        var copy = (int[])_data.Clone();
+        _algorithm.Sort(copy);
+        return copy;
+    }
 }
